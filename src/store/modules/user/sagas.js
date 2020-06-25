@@ -8,7 +8,7 @@ import { updateProfileSuccess, updateProfileFailure } from './actions';
 export function* updateProfile({ payload }) {
   try {
     const { name, email, avatar_id, ...rest } = payload.data;
-    console.tron.log(payload);
+
     const profile = {
       name,
       email,
