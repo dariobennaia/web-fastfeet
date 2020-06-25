@@ -6,44 +6,63 @@ export const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  background: linear-gradient(-90deg, #7159c1, #ab59c1);
+  background: #7d40e7;
 `;
 
 export const Content = styled.div`
   width: 100%;
   max-width: 315px;
   text-align: center;
+  background: #fff;
+  padding: 25px;
+  border-radius: 4px;
+
+  img {
+    width: 250px;
+    max-width: 250px;
+    margin-top: 20px;
+  }
 
   form {
     display: flex;
     flex-direction: column;
     margin-top: 30px;
 
+    label {
+      align-self: flex-start;
+      color: #444444;
+      opacity: 10;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
     input {
-      background: rgba(0, 0, 0, 0.1);
-      border: 0;
+      border: 1px solid #dddddd;
       border-radius: 4px;
       height: 44px;
       padding: 0 15px;
-      color: #fff;
+      color: #999999;
       margin: 0 0 10px;
 
       &::placeholder {
-        color: rgba(255, 255, 255, 0.7);
+        color: #999999;
       }
     }
 
     span {
       color: #fb6f91;
-      margin: 0 0 10px;
+      margin: -10px 0 10px;
       align-self: flex-start;
       font-weight: bold;
+      font-size: 11px;
     }
 
     button {
       margin: 5px 0 0;
       height: 44px;
-      background: #3b9eff;
+      background: #7d40e7;
       font-weight: bold;
       color: #fff;
       border: 0;
@@ -52,12 +71,12 @@ export const Content = styled.div`
       transition: background 0.2s;
 
       &:hover {
-        background: ${darken(0.03, '#3b9eff')};
+        background: ${darken(0.03, '#7D40E7')};
       }
     }
 
     a {
-      color: #fff;
+      color: #444444;
       margin-top: 15px;
       font-size: 16px;
       opacity: 0.8;

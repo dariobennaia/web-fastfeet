@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import Notifications from '~/components/Notifications';
 
-import logo from '~/assets/logo-purple.svg';
+import logo from '~/assets/logo-fastfeet.svg';
 import { Container, Content, Profile } from './styles';
 
 function Header() {
