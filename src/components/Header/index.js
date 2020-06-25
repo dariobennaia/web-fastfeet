@@ -23,7 +23,7 @@ function Header() {
               <Link to="/profile">Mer perfil</Link>
             </div>
             <img
-              src="https:api.adorable.io/avatars/50/abott@adorable.png"
+              src="https://api.adorable.io/avatars/50/abott@adorable.png"
               alt="Diego Fernandes"
             />
           </Profile>
