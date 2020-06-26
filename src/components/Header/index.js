@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
+import { MdList, MdExitToApp } from 'react-icons/md';
 import logo from '~/assets/logo-fastfeet.svg';
-import { Container, Content, Profile, Menu } from './styles';
+import { Container, Content, Profile, Menu, MenuOption } from './styles';
 
 import history from '~/services/history';
 
 function Header() {
   const profile = useSelector((state) => state.user.profile);
   const [menu, setMenu] = useState('/dashboard');
+  const [toggleMenu, setToggleMenu] = useState(false);
 
   useEffect(() => {
     setMenu(history.location.pathname);
@@ -19,34 +21,43 @@ function Header() {
     setMenu(history.location.pathname);
   }
 
+  function handleToggleMenu() {
+    setToggleMenu(!toggleMenu);
+  }
+
   return (
     <Container>
       <Content>
         <nav>
           <img src={logo} alt="GoBarber" />
-          <Menu
-            onClick={() => handleNavigateTo('/dashboard')}
-            active={menu === '/dashboard'}
-          >
-            DASHBOARD
-          </Menu>
-          <Menu
-            onClick={() => handleNavigateTo('/deliverymen')}
-            active={menu === '/deliverymen'}
-          >
-            ENTREGADORES
-          </Menu>
-          <Menu
-            onClick={() => handleNavigateTo('/recipients')}
-            active={menu === '/recipients'}
-          >
-            DESTINATÁRIOS
-          </Menu>
-          <Menu
-            onClick={() => handleNavigateTo('/problems')}
-            active={menu === '/problems'}
-          >
-            PROBLEMAS
+          <button type="button" onClick={handleToggleMenu}>
+            <MdList size={36} color="#444444" />
+          </button>
+          <Menu active={toggleMenu}>
+            <MenuOption
+              onClick={() => handleNavigateTo('/deliveries')}
+              active={menu === '/deliveries'}
+            >
+              ENCOMENDAS
+            </MenuOption>
+            <MenuOption
+              onClick={() => handleNavigateTo('/deliverymen')}
+              active={menu === '/deliverymen'}
+            >
+              ENTREGADORES
+            </MenuOption>
+            <MenuOption
+              onClick={() => handleNavigateTo('/recipients')}
+              active={menu === '/recipients'}
+            >
+              DESTINATÁRIOS
+            </MenuOption>
+            <MenuOption
+              onClick={() => handleNavigateTo('/problems')}
+              active={menu === '/problems'}
+            >
+              PROBLEMAS
+            </MenuOption>
           </Menu>
         </nav>
         <aside>
@@ -54,6 +65,9 @@ function Header() {
             <div>
               <strong>{profile.name}</strong>
               <button type="button">sair do sistema</button>
+              <button type="button">
+                <MdExitToApp size={32} color="#de3b3b" />
+              </button>
             </div>
           </Profile>
         </aside>
