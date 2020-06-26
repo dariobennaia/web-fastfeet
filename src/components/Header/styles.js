@@ -3,11 +3,12 @@ import styled from 'styled-components';
 export const Container = styled.div`
   background: #fff;
   padding: 0 30px;
+  box-shadow: 0px 0px 5px #dddddd;
 `;
 
 export const Content = styled.div`
   height: 64px;
-  max-width: 900px;
+  max-width: 1440px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -20,12 +21,7 @@ export const Content = styled.div`
     img {
       margin-right: 20px;
       padding-right: 20px;
-      border-right: 1px solid #eee;
-    }
-
-    a {
-      font-weight: bold;
-      color: #7159c1;
+      border-right: 1px solid #dddddd;
     }
   }
 
@@ -35,11 +31,19 @@ export const Content = styled.div`
   }
 `;
 
+export const Menu = styled.li`
+  list-style: none;
+  font-weight: bold;
+  cursor: pointer;
+  color: ${(props) => (props.active ? '#444444' : '#999999')};
+
+  & + li {
+    margin-left: 15px;
+  }
+`;
+
 export const Profile = styled.div`
   display: flex;
-  margin-left: 20px;
-  padding-left: 20px;
-  border-left: 1px solid #eee;
 
   div {
     text-align: right;
@@ -47,20 +51,16 @@ export const Profile = styled.div`
 
     strong {
       display: block;
-      color: #333;
+      color: #666666;
     }
 
-    a {
+    button {
+      background: none;
+      border: 0;
       display: block;
       margin-top: 2px;
       font-size: 12px;
-      color: #999;
+      color: #de3b3b;
     }
-  }
-
-  img {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
   }
 `;
