@@ -20,6 +20,7 @@ import {
   BadgeStatus,
   ActionsContent,
 } from './styles';
+import history from '~/services/history';
 
 function Deliveries() {
   const [thead] = useState([
@@ -31,6 +32,15 @@ function Deliveries() {
     'Status',
     'Ações',
   ]);
+
+  function handleCreateDelivery() {
+    history.push('/deliveries/new');
+  }
+
+  function handleEditDelivery(id) {
+    history.push(`/deliveries/edit/${id}`);
+  }
+
   return (
     <Container>
       <Header>
@@ -41,7 +51,7 @@ function Deliveries() {
             <input type="text" placeholder="Buscar por encomendas" />
             <MdSearch color="#999999" size={22} />
           </div>
-          <button type="button">
+          <button type="button" onClick={handleCreateDelivery}>
             <MdAdd size={22} color="#fff" />
             CADASTRAR
           </button>
@@ -66,7 +76,7 @@ function Deliveries() {
                   <ActionsContent>
                     <ActionsDetails />
 
-                    <button type="button">
+                    <button type="button" onClick={() => handleEditDelivery(1)}>
                       <MdEdit size={16} color="#4D85EE" />
                       Editar
                     </button>
