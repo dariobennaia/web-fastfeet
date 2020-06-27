@@ -110,7 +110,63 @@ export const BadgeAvatar = styled.button`
   margin-right: 5px;
 `;
 
-export const Actions = styled.div`
+export const BadgeStatus = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: ${(props) => {
+    switch (props.type) {
+      case 'success':
+        return '#dff0df';
+      case 'warning':
+        return '#F0F0DF';
+      case 'danger':
+        return '#FAB0B0';
+      default:
+        return '#BAD2FF';
+    }
+  }};
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 12px;
+  color: ${(props) => {
+    switch (props.type) {
+      case 'success':
+        return '#2ca42b';
+      case 'warning':
+        return '#C1BC35';
+      case 'danger':
+        return '#DE3B3B';
+      default:
+        return '#4D85EE';
+    }
+  }};
+  font-weight: bold;
+  text-transform: uppercase;
+
+  &::before {
+    display: block;
+    width: 8px;
+    height: 8px;
+    background: ${(props) => {
+      switch (props.type) {
+        case 'success':
+          return '#2ca42b';
+        case 'warning':
+          return '#C1BC35';
+        case 'danger':
+          return '#DE3B3B';
+        default:
+          return '#4D85EE';
+      }
+    }};
+    content: '';
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+`;
+
+export const ActionsContent = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px;

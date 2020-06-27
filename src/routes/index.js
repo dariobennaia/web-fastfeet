@@ -5,19 +5,19 @@ import Route from './Route';
 import SignIn from '~/pages/SignIn';
 import SignUp from '~/pages/SignUp';
 
-import Dashboard from '~/pages/Dashboard';
+import Deliveries from '~/pages/Deliveries';
 import Deliverymen from '~/pages/Deliverymen';
 import Recipients from '~/pages/Recipients';
 import Problems from '~/pages/Problems';
 import Profile from '~/pages/Profile';
 
-export default function Routes() {
+function Routes() {
   return (
     <Switch>
       <Route path="/" exact component={SignIn} />
       <Route path="/register" component={SignUp} />
 
-      <Route path="/dashboard" component={Dashboard} isPrivate />
+      <Route path="/deliveries" component={Deliveries} isPrivate />
       <Route path="/deliverymen" component={Deliverymen} isPrivate />
       <Route path="/recipients" component={Recipients} isPrivate />
       <Route path="/problems" component={Problems} isPrivate />
@@ -25,3 +25,5 @@ export default function Routes() {
     </Switch>
   );
 }
+
+export default Routes;

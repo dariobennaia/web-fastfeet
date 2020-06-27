@@ -6,8 +6,12 @@ export const Wrapper = styled.div`
 `;
 
 export const Content = styled.div`
-  @media (max-width: 800px) {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 1200px;
+
+  @media (max-width: 1024px) {
+    padding: 20px;
   }
 `;

@@ -7,11 +7,7 @@ import DefaultLayout from '~/pages/_layouts/default';
 
 import { store } from '~/store';
 
-export default function RouteWrapper({
-  component: Component,
-  isPrivate = false,
-  ...rest
-}) {
+function RouteWrapper({ component: Component, isPrivate = false, ...rest }) {
   const { signed } = store.getState().auth;
 
   if (!signed && isPrivate) {
@@ -45,3 +41,5 @@ RouteWrapper.propTypes = {
 RouteWrapper.defaultProps = {
   isPrivate: false,
 };
+
+export default RouteWrapper;
