@@ -9,21 +9,12 @@ import Item from './Item';
 import Table from '~/components/Table';
 
 import api from '~/services/api';
+import history from '~/services/history';
 import initialsName from '~/utils/initialsName';
 
 import { Container, Header, Content } from './styles';
-import history from '~/services/history';
 
 function Deliveries() {
-  const [thead] = useState([
-    'ID',
-    'Destinatário',
-    'Entregador',
-    'Cidade',
-    'Estado',
-    'Status',
-    'Ações',
-  ]);
   const [deliveries, setDeliveries] = useState([]);
   const [search, setSearch] = useState('');
 
@@ -100,7 +91,15 @@ function Deliveries() {
       </Header>
       <Content>
         <Table
-          thead={thead}
+          thead={[
+            'ID',
+            'Destinatário',
+            'Entregador',
+            'Cidade',
+            'Estado',
+            'Status',
+            'Ações',
+          ]}
           data={deliveries}
           item={(delivery) => (
             <Item reload={load} key={delivery.id} data={delivery} />

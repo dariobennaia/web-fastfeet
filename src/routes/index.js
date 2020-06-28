@@ -9,8 +9,10 @@ import {
   List as DeliveriesList,
 } from '~/pages/Deliveries';
 
-import Deliverymen from '~/pages/Deliverymen';
-import DeliverymenForm from '~/pages/Deliverymen/Form';
+import {
+  Form as DeliverymenForm,
+  List as DeliverymenList,
+} from '~/pages/Deliverymen';
 
 import Recipients from '~/pages/Recipients';
 import RecipientsForm from '~/pages/Recipients/Form';
@@ -36,7 +38,7 @@ function Routes() {
         isPrivate
       />
 
-      <Route path="/deliverymen" exact component={Deliverymen} isPrivate />
+      <Route path="/deliverymen" exact component={DeliverymenList} isPrivate />
       <Route
         path="/deliverymen/new"
         exact

@@ -6,26 +6,19 @@ import { MdEdit, MdDeleteForever } from 'react-icons/md';
 import { confirmAlert } from 'react-confirm-alert';
 
 import ActionButton from '~/components/ActionButton';
-import ActionsDetails from '../ActionsDetails';
-
 import history from '~/services/history';
 import api from '~/services/api';
 
-import {
-  BadgeAvatar,
-  BadgeStatus,
-  ActionsContent,
-  BadgeAvatarImage,
-} from './styles';
+import { BadgeAvatar, ActionsContent, BadgeAvatarImage } from './styles';
 
 function Item({ data, reload }) {
-  function handleEditDelivery(id) {
-    history.push(`/deliveries/edit/${id}`);
+  function handleEditDeliveryman(id) {
+    history.push(`/deliverymen/edit/${id}`);
   }
 
   async function deleteRegister(id) {
     try {
-      await api.delete(`/deliveries/${id}`);
+      await api.delete(`/deliverymen/${id}`);
       toast.success('Registro excluido com sucesso!');
       reload();
     } catch (err) {
@@ -52,28 +45,20 @@ function Item({ data, reload }) {
   return (
     <ul>
       <li>#{data.id}</li>
-      <li>{data.recipient.name}</li>
       <li>
-        {(data.deliveryman.avatar && (
-          <BadgeAvatarImage
-            src={data.deliveryman.avatar}
-            alt={data.deliveryman.name}
-          />
-        )) || <BadgeAvatar>{data.deliveryman.initials}</BadgeAvatar>}
-
-        {data.deliveryman.name}
+        {(data.avatar && (
+          <BadgeAvatarImage src={data.avatar} alt={data.name} />
+        )) || <BadgeAvatar>{data.initials}</BadgeAvatar>}
       </li>
-      <li>{data.recipient.city}</li>
-      <li>{data.recipient.state}</li>
-      <li>
-        <BadgeStatus type={data.status.type}>{data.status.name}</BadgeStatus>
-      </li>
+      <li>{data.name}</li>
+      <li>{data.email}</li>
       <li>
         <ActionButton big={false}>
           <ActionsContent>
-            <ActionsDetails data={data} />
-
-            <button type="button" onClick={() => handleEditDelivery(data.id)}>
+            <button
+              type="button"
+              onClick={() => handleEditDeliveryman(data.id)}
+            >
               <MdEdit size={16} color="#4D85EE" />
               Editar
             </button>

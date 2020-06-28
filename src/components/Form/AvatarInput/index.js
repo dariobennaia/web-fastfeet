@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useField } from '@unform/core';
-import { MdInsertPhoto } from 'react-icons/md';
 import PropTypes from 'prop-types';
-// import api from '~/services/api';
+import { toast } from 'react-toastify';
 
+import { MdInsertPhoto } from 'react-icons/md';
 import { Container } from './styles';
+
+import api from '~/services/api';
 
 function AvatarInput({ defaultAvatar }) {
   const { defaultValue, registerField } = useField('avatar');
@@ -17,7 +19,7 @@ function AvatarInput({ defaultAvatar }) {
   useEffect(() => {
     if (ref.current) {
       registerField({
-        name: 'avatar_id',
+        name: 'avatarId',
         ref: ref.current,
         path: 'dataset.file',
       });
@@ -25,13 +27,17 @@ function AvatarInput({ defaultAvatar }) {
   }, [ref, registerField]);
 
   async function handleChange(e) {
-    const data = new FormData();
-    data.append('file', e.target.files[0]);
-    /* const {
-      data: { id, url },
-    } = await api.post('/files', data); */
-    setFile(1);
-    setPreview('url');
+    try {
+      const data = new FormData();
+      data.append('file', e.target.files[0]);
+      const {
+        data: { id, url },
+      } = await api.post('/files', data);
+      setFile(id);
+      setPreview(url);
+    } catch (err) {
+      toast.error('Não foi possivel adicionar uma imagem!');
+    }
   }
 
   return (

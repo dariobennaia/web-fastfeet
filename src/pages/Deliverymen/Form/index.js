@@ -3,16 +3,18 @@ import { MdCheck, MdKeyboardArrowLeft } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
+
+import history from '~/services/history';
+import api from '~/services/api';
+import initialsName from '~/utils/initialsName';
+
 import { Container, Header, Content, DefaultAvatar } from './styles';
 import Form, { Input, AvatarInput, Load } from '~/components/Form';
 import { Col, Row } from '~/components/Grid';
-// import api from '~/services/api';
-import history from '~/services/history';
-import initialsName from '~/utils/initialsName';
 
 function FormRecipients({ match }) {
   const { id } = match.params;
-  const formRef = useRef(null);
+  const formRef = useRef();
 
   const [loadingPage, setLoadingPage] = useState(true);
   const [disableButtonForm, setDisableButtonForm] = useState(false);
@@ -28,16 +30,13 @@ function FormRecipients({ match }) {
   useEffect(() => {
     async function loadData() {
       try {
-        // const {data} = api.get(`/deliveries/${id}`);
-        const data = {
-          avatar: {
-            id: 1,
-            url: 'https://api.adorable.io/avatars/50/abott@adorable.png',
-          },
-          name: 'teste',
-          email: 't@t.t',
-        };
-        setInitialData(data);
+        const {
+          data: { avatar, ...rest },
+        } = await api.get(`/deliverymen/${id}`);
+        setInitialData({
+          avatar: { url: (avatar && avatar.url) || null },
+          ...rest,
+        });
         setLoadingPage(false);
       } catch (err) {
         toast.error('Não é possivel atualizar os dados!');
@@ -67,8 +66,11 @@ function FormRecipients({ match }) {
         abortEarly: false,
       });
 
-      console.tron.log(data);
-      // await api.post('/deliveries', data);
+      if (id) {
+        await api.put(`/deliverymen/${id}`, data);
+      } else {
+        await api.post('/deliverymen', data);
+      }
       toast.success('Entregador salvo com sucesso!');
       handleBack();
     } catch (err) {
@@ -92,7 +94,7 @@ function FormRecipients({ match }) {
       return <AvatarInput {...rest} />;
     }
 
-    const initials = initialsName('dario bennaia araujo santos');
+    const initials = initialsName(initialData.name);
     return (
       <AvatarInput
         defaultAvatar={<DefaultAvatar>{initials}</DefaultAvatar>}
@@ -133,7 +135,7 @@ function FormRecipients({ match }) {
           initialData={initialData}
           disabled={disableButtonForm}
         >
-          <AvatarInputForm name="avatar_id" />
+          <AvatarInputForm name="avatarId" />
           <Row>
             <Col size={12}>
               <Input
