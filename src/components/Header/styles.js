@@ -110,7 +110,9 @@ export const Profile = styled.div`
   display: flex;
 
   div {
-    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     margin-right: 10px;
 
     strong {
