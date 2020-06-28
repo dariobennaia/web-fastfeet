@@ -2,6 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import 'react-toastify/dist/ReactToastify.min.css';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
@@ -39,5 +40,25 @@ export default createGlobalStyle`
 
   button {
     cursor: pointer;
+  }
+
+  .react-confirm-alert-overlay {
+    background: #4444444f !important;
+  }
+
+  .react-confirm-alert-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    button:nth-child(1) {
+      background: #DE3B3B;
+      font-weight: bold;
+    }
+    button:nth-child(2) {
+      background: #999999;
+      font-weight: bold;
+    }
   }
 `;

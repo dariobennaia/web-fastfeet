@@ -1,9 +1,9 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
-import { Content, Thead, Tbody } from './styles';
+import { Content, Thead, Tbody, NoRegisters } from './styles';
 
-function Table({ children, thead }) {
+function Table({ thead, data, item }) {
   return (
     <Content>
       <Thead quantity={thead.length}>
@@ -11,14 +11,20 @@ function Table({ children, thead }) {
           <li key={v}>{v}</li>
         ))}
       </Thead>
-      <Tbody quantity={thead.length}>{children}</Tbody>
+      <Tbody quantity={thead.length}>
+        {data.map(item)}
+        {data.length === 0 && (
+          <NoRegisters>Nenhum registro encontrado</NoRegisters>
+        )}
+      </Tbody>
     </Content>
   );
 }
 
 Table.propTypes = {
-  children: PropTypes.element.isRequired,
+  item: PropTypes.func.isRequired,
   thead: PropTypes.arrayOf(PropTypes.string).isRequired,
+  data: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export default Table;

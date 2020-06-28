@@ -3,15 +3,17 @@ import { MdCheck, MdKeyboardArrowLeft } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
+
+import history from '~/services/history';
+import api from '~/services/api';
+
 import { Container, Header, Content } from './styles';
 import Form, { Input, Select, Load } from '~/components/Form';
 import { Col, Row } from '~/components/Grid';
-// import api from '~/services/api';
-import history from '~/services/history';
 
 function FormDeliveries({ match }) {
   const { id } = match.params;
-  const formRef = useRef(null);
+  const formRef = useRef();
 
   const [titlePage] = useState(
     id ? 'Edição de encomendas' : 'Cadastro de encomendas'
@@ -21,36 +23,15 @@ function FormDeliveries({ match }) {
   const [disableButtonForm, setDisableButtonForm] = useState(false);
   const [initialData, setInitialData] = useState({});
 
-  const [recipients] = useState([{ value: 1, label: 'Destinatario 1' }]);
+  const [recipients, setRecipients] = useState([]);
   const [selectedRecipient, setSelectRecipient] = useState('');
 
-  const [deliverymen] = useState([{ value: 1, label: 'Entregador 1' }]);
+  const [deliverymen, setDeliverymen] = useState([]);
   const [selectedDeliveryman, setSelectDeliveryman] = useState('');
 
   function handleBack() {
     history.push('/deliveries');
   }
-
-  useEffect(() => {
-    async function loadData() {
-      try {
-        // const {data} = api.get(`/deliveries/${id}`);
-        const data = { product: 'produto tal' };
-        setSelectRecipient(recipients[0]);
-        setSelectDeliveryman(deliverymen[0]);
-        setInitialData(data);
-        setLoadingPage(false);
-      } catch (err) {
-        toast.error('Não é possivel atualizar os dados!');
-        handleBack();
-      }
-    }
-    if (id) {
-      loadData();
-      return;
-    }
-    setLoadingPage(false);
-  }, [id, recipients, deliverymen]);
 
   function handleChangeRecipient(selectedOption) {
     setSelectRecipient(selectedOption);
@@ -60,24 +41,69 @@ function FormDeliveries({ match }) {
     setSelectDeliveryman(selectedOption);
   }
 
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const {
+          data: { deliveryman, recipient, product },
+        } = await api.get(`/deliveries/${id}`);
+        setSelectRecipient({ value: recipient.id, label: recipient.name });
+        setSelectDeliveryman({
+          value: deliveryman.id,
+          label: deliveryman.name,
+        });
+        setInitialData({ product });
+        setLoadingPage(false);
+      } catch (err) {
+        toast.error('Não é possivel atualizar os dados!');
+        handleBack();
+      }
+    }
+    if (id && recipients.length > 0 && deliverymen.length > 0) {
+      loadData();
+      return;
+    }
+    setLoadingPage(false);
+  }, [id, recipients, deliverymen]);
+
+  useEffect(() => {
+    async function loadSelectInputs() {
+      const [data1, data2] = await Promise.all([
+        api.get('/recipients'),
+        api.get('/deliverymen'),
+      ]);
+      setRecipients(
+        data1.data.map(({ id: value, name: label }) => ({ value, label }))
+      );
+      setDeliverymen(
+        data2.data.map(({ id: value, name: label }) => ({ value, label }))
+      );
+    }
+    loadSelectInputs();
+  }, []);
+
   async function handleSubmit(data) {
     try {
       setDisableButtonForm(true);
       const schema = Yup.object().shape({
-        id_recipient: Yup.string().required('Informe o destinatário!'),
-        id_deliveryman: Yup.string().required('Informe o entregador!'),
+        recipientId: Yup.string().required('Informe o destinatário!'),
+        deliverymanId: Yup.string().required('Informe o entregador!'),
         product: Yup.string()
           .min(5, 'O nome deve conter no minimo 5 caracteres!')
           .required('Informe o nome do produto!'),
       });
 
-      data.id_recipient = selectedRecipient.value;
-      data.id_deliveryman = selectedDeliveryman.value;
+      data.recipientId = selectedRecipient.value;
+      data.deliverymanId = selectedDeliveryman.value;
       await schema.validate(data, {
         abortEarly: false,
       });
 
-      // await api.post('/deliveries', data);
+      if (id) {
+        await api.put(`/deliveries/${id}`, data);
+      } else {
+        await api.post('/deliveries', data);
+      }
       toast.success('Entrega salva com sucesso!');
       handleBack();
     } catch (err) {
@@ -131,7 +157,7 @@ function FormDeliveries({ match }) {
           <Row>
             <Col size={6}>
               <Select
-                name="id_recipient"
+                name="recipientId"
                 label="Destinatário"
                 placeholder="Selecione um destinatário"
                 options={recipients}
@@ -142,7 +168,7 @@ function FormDeliveries({ match }) {
             </Col>
             <Col size={6}>
               <Select
-                name="id_deliveryman"
+                name="deliverymanId"
                 label="Entregador"
                 placeholder="Selecione um entregador"
                 options={deliverymen}

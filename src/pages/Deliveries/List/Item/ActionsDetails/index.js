@@ -1,11 +1,17 @@
 import React from 'react';
 import { MdVisibility } from 'react-icons/md';
 import PropTypes from 'prop-types';
+import { format, parseISO } from 'date-fns';
 import Modal from '~/components/Modal';
 
 import { Content, Button } from './styles';
 
 function ActionsDetails({ data }) {
+  function handleFormatDate(date, message) {
+    if (!date) return message;
+    return format(parseISO(date), 'dd/MM/yyyy');
+  }
+
   return (
     <Modal
       trigger={
@@ -18,19 +24,30 @@ function ActionsDetails({ data }) {
       <Content>
         <div>
           <strong>Informações da encomenda</strong>
-          <small>Rua 216, 124</small>
-          <small>Fortaleza - Ce</small>
-          <small>60866-270</small>
+          <small>
+            {data.recipient.street}, {data.recipient.number}
+          </small>
+          <small>
+            {data.recipient.city} - {data.recipient.state}
+          </small>
+          <small>{data.recipient.postcode}</small>
         </div>
 
         <div>
           <strong>Datas</strong>
-          <small>Retirada: 12/12/2020</small>
-          <small>Entrega: 12/12/2020</small>
+          <small>
+            Retirada: {handleFormatDate(data.startDate, 'Não restirada')}
+          </small>
+          <small>
+            Entregue: {handleFormatDate(data.endDate, 'Não entregue')}
+          </small>
         </div>
 
         <div>
           <strong>Assinatura do destinatario</strong>
+          {(data.signature && (
+            <img src={data.signature} alt="Assinatura" />
+          )) || <small>Nenhuma assinatura</small>}
         </div>
       </Content>
     </Modal>

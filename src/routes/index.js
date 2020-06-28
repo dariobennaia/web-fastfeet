@@ -4,8 +4,10 @@ import Route from './Route';
 
 import SignIn from '~/pages/SignIn';
 
-import Deliveries from '~/pages/Deliveries';
-import DeliveriesForm from '~/pages/Deliveries/Form';
+import {
+  Form as DeliveriesForm,
+  List as DeliveriesList,
+} from '~/pages/Deliveries';
 
 import Deliverymen from '~/pages/Deliverymen';
 import DeliverymenForm from '~/pages/Deliverymen/Form';
@@ -20,7 +22,7 @@ function Routes() {
     <Switch>
       <Route path="/" exact component={SignIn} />
 
-      <Route path="/deliveries" exact component={Deliveries} isPrivate />
+      <Route path="/deliveries" exact component={DeliveriesList} isPrivate />
       <Route
         path="/deliveries/new"
         exact

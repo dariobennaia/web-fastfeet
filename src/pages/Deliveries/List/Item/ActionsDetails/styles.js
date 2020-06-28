@@ -32,6 +32,12 @@ export const Content = styled.div`
     :nth-last-child(-n + 1) {
       border: 0;
     }
+
+    img {
+      height: 100px;
+      width: 300px;
+      margin: 0 auto;
+    }
   }
 `;
 

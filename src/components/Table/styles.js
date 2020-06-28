@@ -56,3 +56,13 @@ export const Tbody = styled.div`
     }
   }
 `;
+
+export const NoRegisters = styled.div`
+  display: flex;
+  justify-content: center;
+  background: #ffffff;
+  align-items: center;
+  height: 57px;
+  font-weight: bold;
+  color: #666666;
+`;
