@@ -30,7 +30,7 @@ function ActionsDetails({ data }) {
           <small>
             {data.recipient.city} - {data.recipient.state}
           </small>
-          <small>{data.recipient.postcode}</small>
+          <small>{data.recipient.postCode}</small>
         </div>
 
         <div>

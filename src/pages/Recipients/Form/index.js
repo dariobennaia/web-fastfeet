@@ -3,15 +3,17 @@ import { MdCheck, MdKeyboardArrowLeft } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
+
+import history from '~/services/history';
+import api from '~/services/api';
+
 import { Container, Header, Content } from './styles';
 import Form, { Input, InputMask, Load } from '~/components/Form';
 import { Col, Row } from '~/components/Grid';
-// import api from '~/services/api';
-import history from '~/services/history';
 
 function FormRecipients({ match }) {
   const { id } = match.params;
-  const formRef = useRef(null);
+  const formRef = useRef();
 
   const [loadingPage, setLoadingPage] = useState(true);
   const [disableButtonForm, setDisableButtonForm] = useState(false);
@@ -27,15 +29,7 @@ function FormRecipients({ match }) {
   useEffect(() => {
     async function loadData() {
       try {
-        // const { data } = api.get(`/deliveries/${id}`);
-        const data = {
-          name: 'teste',
-          street: 'Rua tal',
-          number: '124',
-          city: 'Fortaleza',
-          state: 'Ceará',
-          postcode: '60866000',
-        };
+        const { data } = await api.get(`/recipients/${id}`);
         setInitialData(data);
         setLoadingPage(false);
       } catch (err) {
@@ -61,7 +55,7 @@ function FormRecipients({ match }) {
         number: Yup.string().required('Informe o número!'),
         city: Yup.string().required('Informe a cidade!'),
         state: Yup.string().required('Informe o estado!'),
-        postcode: Yup.string()
+        postCode: Yup.string()
           .min(9, 'CEP inválido!')
           .required('Informe o CEP!'),
       });
@@ -70,7 +64,12 @@ function FormRecipients({ match }) {
         abortEarly: false,
       });
 
-      // await api.post('/deliveries', data);
+      if (id) {
+        await api.put(`/recipients/${id}`, data);
+      } else {
+        await api.post('/recipients', data);
+      }
+
       toast.success('Destinatário salvo com sucesso!');
       handleBack();
     } catch (err) {
@@ -150,7 +149,7 @@ function FormRecipients({ match }) {
             </Col>
             <Col size={4}>
               <InputMask
-                name="postcode"
+                name="postCode"
                 label="CEP"
                 mask="99999-999"
                 maskChar=""

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useField } from '@unform/core';
 import ReactInputMask from 'react-input-mask';
@@ -13,6 +13,12 @@ function InputMask({ name, label, ...rest }) {
       path: 'value',
     });
   }, [fieldName, registerField]);
+
+  const [value, setValue] = useState(defaultValue);
+  function handleChange(e) {
+    setValue(e.target.value);
+  }
+
   return (
     <>
       <label htmlFor={fieldName}>{label}</label>
@@ -20,7 +26,8 @@ function InputMask({ name, label, ...rest }) {
         id={fieldName}
         ref={inputRef}
         defaultValue={defaultValue}
-        value={defaultValue}
+        value={value}
+        onChange={handleChange}
         {...rest}
       />
       {error && <span className="error">{error}</span>}

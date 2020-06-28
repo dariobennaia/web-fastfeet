@@ -21,7 +21,7 @@ function SignIn() {
           .required('O e-mail é obrigatório'),
         password: Yup.string().required('A senha é obrigatória'),
       });
-      console.tron.log(email, password);
+
       await schema.validate(
         { email, password },
         {

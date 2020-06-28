@@ -2,19 +2,24 @@ import React, { useState, useEffect, useRef } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import _ from 'lodash';
 
-import { MdSearch } from 'react-icons/md';
+import { MdAdd, MdSearch } from 'react-icons/md';
 import { toast } from 'react-toastify';
 
 import Item from './Item';
 import Table from '~/components/Table';
 
 import api from '~/services/api';
+import history from '~/services/history';
 
 import { Container, Header, Content } from './styles';
 
-function Problems() {
-  const [problems, setProblems] = useState([]);
+function Recipients() {
+  const [recipients, setRecipients] = useState([]);
   const [search, setSearch] = useState('');
+
+  function handleCreateRecipient() {
+    history.push('/recipients/new');
+  }
 
   function handleSearch(e) {
     setSearch(e.target.value);
@@ -22,10 +27,15 @@ function Problems() {
 
   async function load(q = '') {
     try {
-      const { data } = await api.get(`/problems`, {
+      const { data } = await api.get(`/recipients`, {
         params: { q },
       });
-      setProblems(data);
+      setRecipients(
+        data.map((v) => ({
+          ...v,
+          avatar: (v.avatar && v.avatar.url) || null,
+        }))
+      );
     } catch (err) {
       toast.error('Não foi possivel listar os dados.');
     }
@@ -40,25 +50,29 @@ function Problems() {
   return (
     <Container>
       <Header>
-        <h2>Problemas na encomenda</h2>
+        <h2>Gerenciando destinatários</h2>
 
         <div>
           <div>
             <input
               type="text"
-              placeholder="Buscar por problemas"
+              placeholder="Buscar por destinatários"
               onChange={handleSearch}
             />
             <MdSearch color="#999999" size={22} />
           </div>
+          <button type="button" onClick={handleCreateRecipient}>
+            <MdAdd size={22} color="#fff" />
+            CADASTRAR
+          </button>
         </div>
       </Header>
       <Content>
         <Table
-          thead={['Encomenda', 'Problema', 'Ações']}
-          data={problems}
-          item={(problem) => (
-            <Item reload={load} key={problem.id} data={problem} />
+          thead={['ID', 'Nome', 'Endereço', 'Ações']}
+          data={recipients}
+          item={(recipient) => (
+            <Item reload={load} key={recipient.id} data={recipient} />
           )}
         />
       </Content>
@@ -66,4 +80,4 @@ function Problems() {
   );
 }
 
-export default Problems;
+export default Recipients;
