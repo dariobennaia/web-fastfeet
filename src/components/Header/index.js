@@ -36,7 +36,7 @@ function Header() {
     <Container>
       <Content>
         <nav>
-          <img src={logo} alt="GoBarber" />
+          <img src={logo} alt="FastFeet" />
           <button type="button" onClick={handleToggleMenu}>
             <MdList size={36} color="#444444" />
           </button>
@@ -70,7 +70,7 @@ function Header() {
         <aside>
           <Profile>
             <div>
-              <strong>{profile.name}</strong>
+              <strong>{profile && profile.name}</strong>
               <button type="button" onClick={handleSignOut}>
                 sair do sistema
               </button>
