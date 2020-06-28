@@ -70,4 +70,26 @@ export const Content = styled.div`
   background: #ffffff;
   padding: 30px;
   border-radius: 4px;
+
+  form {
+    > div:nth-child(2n + 1) {
+      display: flex;
+      justify-content: center;
+    }
+  }
+`;
+
+export const DefaultAvatar = styled.div`
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 1px dashed #a28fd0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4effc;
+  text-transform: uppercase;
+  font-size: 66px;
+  font-weight: lighter;
+  color: #a28fd0;
 `;

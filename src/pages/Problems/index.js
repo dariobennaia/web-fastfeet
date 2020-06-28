@@ -22,7 +22,7 @@ function Recipients() {
             <li>
               <ActionButton big>
                 <ActionsContent>
-                  <ActionsDetails />
+                  <ActionsDetails data={{}} />
 
                   <button type="button">
                     <MdDeleteForever size={16} color="#DE3B3B" />

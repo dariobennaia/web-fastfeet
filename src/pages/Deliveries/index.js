@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  MdAdd,
-  MdSearch,
-  MdVisibility,
-  MdEdit,
-  MdDeleteForever,
-} from 'react-icons/md';
+import { MdAdd, MdSearch, MdEdit, MdDeleteForever } from 'react-icons/md';
 
 import ActionButton from '~/components/ActionButton';
 import ActionsDetails from './ActionsDetails';
@@ -74,7 +68,7 @@ function Deliveries() {
               <li>
                 <ActionButton big={false}>
                   <ActionsContent>
-                    <ActionsDetails />
+                    <ActionsDetails data={{}} />
 
                     <button type="button" onClick={() => handleEditDelivery(1)}>
                       <MdEdit size={16} color="#4D85EE" />
@@ -103,10 +97,7 @@ function Deliveries() {
               <li>
                 <ActionButton big={false}>
                   <ActionsContent>
-                    <button type="button">
-                      <MdVisibility size={16} color="#8E5BE8" />
-                      Visualizar
-                    </button>
+                    <ActionsDetails data={{}} />
 
                     <button type="button">
                       <MdEdit size={16} color="#4D85EE" />
@@ -135,10 +126,7 @@ function Deliveries() {
               <li>
                 <ActionButton big={false}>
                   <ActionsContent>
-                    <button type="button">
-                      <MdVisibility size={16} color="#8E5BE8" />
-                      Visualizar
-                    </button>
+                    <ActionsDetails data={{}} />
 
                     <button type="button">
                       <MdEdit size={16} color="#4D85EE" />
@@ -167,10 +155,7 @@ function Deliveries() {
               <li>
                 <ActionButton big={false}>
                   <ActionsContent>
-                    <button type="button">
-                      <MdVisibility size={16} color="#8E5BE8" />
-                      Visualizar
-                    </button>
+                    <ActionsDetails data={{}} />
 
                     <button type="button">
                       <MdEdit size={16} color="#4D85EE" />

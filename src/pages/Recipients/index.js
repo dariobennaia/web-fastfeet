@@ -6,8 +6,17 @@ import ActionButton from '~/components/ActionButton';
 import Table from '~/components/Table';
 
 import { Container, Header, Content, Actions } from './styles';
+import history from '~/services/history';
 
 function Recipients() {
+  function handleCreateRecipient() {
+    history.push('/recipients/new');
+  }
+
+  function handleEditRecipient(id) {
+    history.push(`/recipients/edit/${id}`);
+  }
+
   return (
     <Container>
       <Header>
@@ -18,7 +27,7 @@ function Recipients() {
             <input type="text" placeholder="Buscar por destinatários" />
             <MdSearch color="#999999" size={22} />
           </div>
-          <button type="button">
+          <button type="button" onClick={handleCreateRecipient}>
             <MdAdd size={22} color="#fff" />
             CADASTRAR
           </button>
@@ -33,7 +42,7 @@ function Recipients() {
             <li>
               <ActionButton big={false}>
                 <Actions>
-                  <button type="button">
+                  <button type="button" onClick={() => handleEditRecipient(1)}>
                     <MdEdit size={16} color="#4D85EE" />
                     Editar
                   </button>

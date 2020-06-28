@@ -3,41 +3,40 @@ import { MdCheck, MdKeyboardArrowLeft } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
-import { Container, Header, Content } from './styles';
-import Form, { Input, Select, Load } from '~/components/Form';
+import { Container, Header, Content, DefaultAvatar } from './styles';
+import Form, { Input, AvatarInput, Load } from '~/components/Form';
 import { Col, Row } from '~/components/Grid';
 // import api from '~/services/api';
 import history from '~/services/history';
+import initialsName from '~/utils/initialsName';
 
-function FormDeliveries({ match }) {
+function FormRecipients({ match }) {
   const { id } = match.params;
   const formRef = useRef(null);
-
-  const [titlePage] = useState(
-    id ? 'Edição de encomendas' : 'Cadastro de encomendas'
-  );
 
   const [loadingPage, setLoadingPage] = useState(true);
   const [disableButtonForm, setDisableButtonForm] = useState(false);
   const [initialData, setInitialData] = useState({});
-
-  const [recipients] = useState([{ value: 1, label: 'Destinatario 1' }]);
-  const [selectedRecipient, setSelectRecipient] = useState('');
-
-  const [deliverymen] = useState([{ value: 1, label: 'Entregador 1' }]);
-  const [selectedDeliveryman, setSelectDeliveryman] = useState('');
+  const [titlePage] = useState(
+    id ? 'Edição de entregadores' : 'Cadastro de entregadores'
+  );
 
   function handleBack() {
-    history.push('/deliveries');
+    history.push('/deliverymen');
   }
 
   useEffect(() => {
     async function loadData() {
       try {
         // const {data} = api.get(`/deliveries/${id}`);
-        const data = { product: 'produto tal' };
-        setSelectRecipient(recipients[0]);
-        setSelectDeliveryman(deliverymen[0]);
+        const data = {
+          avatar: {
+            id: 1,
+            url: 'https://api.adorable.io/avatars/50/abott@adorable.png',
+          },
+          name: 'teste',
+          email: 't@t.t',
+        };
         setInitialData(data);
         setLoadingPage(false);
       } catch (err) {
@@ -50,35 +49,27 @@ function FormDeliveries({ match }) {
       return;
     }
     setLoadingPage(false);
-  }, [id, recipients, deliverymen]);
-
-  function handleChangeRecipient(selectedOption) {
-    setSelectRecipient(selectedOption);
-  }
-
-  function handleChangeDeliveryman(selectedOption) {
-    setSelectDeliveryman(selectedOption);
-  }
+  }, [id]);
 
   async function handleSubmit(data) {
     try {
       setDisableButtonForm(true);
       const schema = Yup.object().shape({
-        id_recipient: Yup.string().required('Informe o destinatário!'),
-        id_deliveryman: Yup.string().required('Informe o entregador!'),
-        product: Yup.string()
+        name: Yup.string()
           .min(5, 'O nome deve conter no minimo 5 caracteres!')
-          .required('Informe o nome do produto!'),
+          .required('Informe o nome!'),
+        email: Yup.string()
+          .email('Email inválido')
+          .required('Informe o email!'),
       });
 
-      data.id_recipient = selectedRecipient.value;
-      data.id_deliveryman = selectedDeliveryman.value;
       await schema.validate(data, {
         abortEarly: false,
       });
 
+      console.tron.log(data);
       // await api.post('/deliveries', data);
-      toast.success('Entrega salva com sucesso!');
+      toast.success('Entregador salvo com sucesso!');
       handleBack();
     } catch (err) {
       const validationErrors = {};
@@ -90,10 +81,24 @@ function FormDeliveries({ match }) {
         return;
       }
 
-      toast.error('Não foi possivel salvar a entrega!');
+      toast.error('Não foi possivel salvar o entregador!');
     } finally {
       setDisableButtonForm(false);
     }
+  }
+
+  function AvatarInputForm({ ...rest }) {
+    if (!id) {
+      return <AvatarInput {...rest} />;
+    }
+
+    const initials = initialsName('dario bennaia araujo santos');
+    return (
+      <AvatarInput
+        defaultAvatar={<DefaultAvatar>{initials}</DefaultAvatar>}
+        {...rest}
+      />
+    );
   }
 
   if (loadingPage) {
@@ -106,11 +111,7 @@ function FormDeliveries({ match }) {
         <h2>{titlePage}</h2>
 
         <div>
-          <button
-            type="button"
-            onClick={handleBack}
-            disabled={disableButtonForm}
-          >
+          <button type="button" onClick={handleBack}>
             <MdKeyboardArrowLeft size={22} color="#fff" />
             Voltar
           </button>
@@ -118,7 +119,6 @@ function FormDeliveries({ match }) {
             type="button"
             id="save"
             onClick={() => formRef.current.submitForm()}
-            disabled={disableButtonForm}
           >
             <MdCheck size={22} color="#fff" />
             Salvar
@@ -127,37 +127,29 @@ function FormDeliveries({ match }) {
       </Header>
 
       <Content>
-        <Form onSubmit={handleSubmit} ref={formRef} initialData={initialData}>
+        <Form
+          onSubmit={handleSubmit}
+          ref={formRef}
+          initialData={initialData}
+          disabled={disableButtonForm}
+        >
+          <AvatarInputForm name="avatar_id" />
           <Row>
-            <Col size={6}>
-              <Select
-                name="id_recipient"
-                label="Destinatário"
-                placeholder="Selecione um destinatário"
-                options={recipients}
-                value={selectedRecipient}
-                defaultValue=""
-                onChange={handleChangeRecipient}
-              />
-            </Col>
-            <Col size={6}>
-              <Select
-                name="id_deliveryman"
-                label="Entregador"
-                placeholder="Selecione um entregador"
-                options={deliverymen}
-                value={selectedDeliveryman}
-                defaultValue=""
-                onChange={handleChangeDeliveryman}
+            <Col size={12}>
+              <Input
+                name="name"
+                placeholder="Ex: Ludwig van Beethoven"
+                label="Nome"
+                disabled={disableButtonForm}
               />
             </Col>
           </Row>
           <Row>
             <Col size={12}>
               <Input
-                name="product"
-                placeholder="Yamaha SX7"
-                label="Nome do produto"
+                name="email"
+                placeholder="Ex: Examplo@email.com"
+                label="Email"
               />
             </Col>
           </Row>
@@ -167,7 +159,7 @@ function FormDeliveries({ match }) {
   );
 }
 
-FormDeliveries.propTypes = {
+FormRecipients.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,
@@ -175,4 +167,4 @@ FormDeliveries.propTypes = {
   }).isRequired,
 };
 
-export default FormDeliveries;
+export default FormRecipients;

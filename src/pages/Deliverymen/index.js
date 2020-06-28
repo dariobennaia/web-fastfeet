@@ -6,8 +6,16 @@ import ActionButton from '~/components/ActionButton';
 import Table from '~/components/Table';
 
 import { Container, Header, Content, BadgeAvatar, Actions } from './styles';
+import history from '~/services/history';
 
 function Deliverymen() {
+  function handleCreateDeliveryman() {
+    history.push('/deliverymen/new');
+  }
+
+  function handleEditDeliveryman(id) {
+    history.push(`/deliverymen/edit/${id}`);
+  }
   return (
     <Container>
       <Header>
@@ -18,7 +26,7 @@ function Deliverymen() {
             <input type="text" placeholder="Buscar por entregadores" />
             <MdSearch color="#999999" size={22} />
           </div>
-          <button type="button">
+          <button type="button" onClick={handleCreateDeliveryman}>
             <MdAdd size={22} color="#fff" />
             CADASTRAR
           </button>
@@ -36,7 +44,10 @@ function Deliverymen() {
             <li>
               <ActionButton big={false}>
                 <Actions>
-                  <button type="button">
+                  <button
+                    type="button"
+                    onClick={() => handleEditDeliveryman(1)}
+                  >
                     <MdEdit size={16} color="#4D85EE" />
                     Editar
                   </button>

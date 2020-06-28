@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useField } from '@rocketseat/unform';
-import api from '~/services/api';
+import { useField } from '@unform/core';
+import { MdInsertPhoto } from 'react-icons/md';
+import PropTypes from 'prop-types';
+// import api from '~/services/api';
 
 import { Container } from './styles';
 
-function AvatarInput() {
+function AvatarInput({ defaultAvatar }) {
   const { defaultValue, registerField } = useField('avatar');
 
   const [file, setFile] = useState(defaultValue && defaultValue.id);
@@ -25,22 +27,17 @@ function AvatarInput() {
   async function handleChange(e) {
     const data = new FormData();
     data.append('file', e.target.files[0]);
-    const {
+    /* const {
       data: { id, url },
-    } = await api.post('files', data);
-    setFile(id);
-    setPreview(url);
+    } = await api.post('/files', data); */
+    setFile(1);
+    setPreview('url');
   }
 
   return (
     <Container>
       <label htmlFor="avatar">
-        <img
-          src={
-            preview || 'https://api.adorable.io/avatars/50/abott@adorable.png'
-          }
-          alt=""
-        />
+        {(preview && <img src={preview} alt="Avatar" />) || defaultAvatar}
         <input
           type="file"
           id="avatar"
@@ -53,5 +50,18 @@ function AvatarInput() {
     </Container>
   );
 }
+
+AvatarInput.propTypes = {
+  defaultAvatar: PropTypes.element,
+};
+
+AvatarInput.defaultProps = {
+  defaultAvatar: (
+    <div>
+      <MdInsertPhoto size={44} color="#ddd" />
+      <strong>Adicionar foto</strong>
+    </div>
+  ),
+};
 
 export default AvatarInput;

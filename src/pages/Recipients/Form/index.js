@@ -4,40 +4,38 @@ import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Container, Header, Content } from './styles';
-import Form, { Input, Select, Load } from '~/components/Form';
+import Form, { Input, InputMask, Load } from '~/components/Form';
 import { Col, Row } from '~/components/Grid';
 // import api from '~/services/api';
 import history from '~/services/history';
 
-function FormDeliveries({ match }) {
+function FormRecipients({ match }) {
   const { id } = match.params;
   const formRef = useRef(null);
-
-  const [titlePage] = useState(
-    id ? 'Edição de encomendas' : 'Cadastro de encomendas'
-  );
 
   const [loadingPage, setLoadingPage] = useState(true);
   const [disableButtonForm, setDisableButtonForm] = useState(false);
   const [initialData, setInitialData] = useState({});
-
-  const [recipients] = useState([{ value: 1, label: 'Destinatario 1' }]);
-  const [selectedRecipient, setSelectRecipient] = useState('');
-
-  const [deliverymen] = useState([{ value: 1, label: 'Entregador 1' }]);
-  const [selectedDeliveryman, setSelectDeliveryman] = useState('');
+  const [titlePage] = useState(
+    id ? 'Edição de destinatário' : 'Cadastro de destinatário'
+  );
 
   function handleBack() {
-    history.push('/deliveries');
+    history.push('/recipients');
   }
 
   useEffect(() => {
     async function loadData() {
       try {
-        // const {data} = api.get(`/deliveries/${id}`);
-        const data = { product: 'produto tal' };
-        setSelectRecipient(recipients[0]);
-        setSelectDeliveryman(deliverymen[0]);
+        // const { data } = api.get(`/deliveries/${id}`);
+        const data = {
+          name: 'teste',
+          street: 'Rua tal',
+          number: '124',
+          city: 'Fortaleza',
+          state: 'Ceará',
+          postcode: '60866000',
+        };
         setInitialData(data);
         setLoadingPage(false);
       } catch (err) {
@@ -50,35 +48,30 @@ function FormDeliveries({ match }) {
       return;
     }
     setLoadingPage(false);
-  }, [id, recipients, deliverymen]);
-
-  function handleChangeRecipient(selectedOption) {
-    setSelectRecipient(selectedOption);
-  }
-
-  function handleChangeDeliveryman(selectedOption) {
-    setSelectDeliveryman(selectedOption);
-  }
+  }, [id]);
 
   async function handleSubmit(data) {
     try {
       setDisableButtonForm(true);
       const schema = Yup.object().shape({
-        id_recipient: Yup.string().required('Informe o destinatário!'),
-        id_deliveryman: Yup.string().required('Informe o entregador!'),
-        product: Yup.string()
+        name: Yup.string()
           .min(5, 'O nome deve conter no minimo 5 caracteres!')
-          .required('Informe o nome do produto!'),
+          .required('Informe o nome!'),
+        street: Yup.string().required('Informe a rua!'),
+        number: Yup.string().required('Informe o número!'),
+        city: Yup.string().required('Informe a cidade!'),
+        state: Yup.string().required('Informe o estado!'),
+        postcode: Yup.string()
+          .min(9, 'CEP inválido!')
+          .required('Informe o CEP!'),
       });
 
-      data.id_recipient = selectedRecipient.value;
-      data.id_deliveryman = selectedDeliveryman.value;
       await schema.validate(data, {
         abortEarly: false,
       });
 
       // await api.post('/deliveries', data);
-      toast.success('Entrega salva com sucesso!');
+      toast.success('Destinatário salvo com sucesso!');
       handleBack();
     } catch (err) {
       const validationErrors = {};
@@ -90,7 +83,7 @@ function FormDeliveries({ match }) {
         return;
       }
 
-      toast.error('Não foi possivel salvar a entrega!');
+      toast.error('Não foi possivel salvar o destinatário!');
     } finally {
       setDisableButtonForm(false);
     }
@@ -129,35 +122,39 @@ function FormDeliveries({ match }) {
       <Content>
         <Form onSubmit={handleSubmit} ref={formRef} initialData={initialData}>
           <Row>
-            <Col size={6}>
-              <Select
-                name="id_recipient"
-                label="Destinatário"
-                placeholder="Selecione um destinatário"
-                options={recipients}
-                value={selectedRecipient}
-                defaultValue=""
-                onChange={handleChangeRecipient}
-              />
-            </Col>
-            <Col size={6}>
-              <Select
-                name="id_deliveryman"
-                label="Entregador"
-                placeholder="Selecione um entregador"
-                options={deliverymen}
-                value={selectedDeliveryman}
-                defaultValue=""
-                onChange={handleChangeDeliveryman}
+            <Col size={12}>
+              <Input
+                name="name"
+                placeholder="Ex: Ludwig van Beethoven"
+                label="Nome"
               />
             </Col>
           </Row>
           <Row>
-            <Col size={12}>
-              <Input
-                name="product"
-                placeholder="Yamaha SX7"
-                label="Nome do produto"
+            <Col size={7}>
+              <Input name="street" placeholder="Ex: Rua 10" label="Rua" />
+            </Col>
+            <Col size={2.5}>
+              <Input name="number" placeholder="Ex: 1729" label="Número" />
+            </Col>
+            <Col size={2.5}>
+              <Input name="complement" label="Complemento" />
+            </Col>
+          </Row>
+          <Row>
+            <Col size={4}>
+              <Input name="city" placeholder="Ex: Fortaleza" label="Cidade" />
+            </Col>
+            <Col size={4}>
+              <Input name="state" placeholder="Ex: Ceará" label="Estado" />
+            </Col>
+            <Col size={4}>
+              <InputMask
+                name="postcode"
+                label="CEP"
+                mask="99999-999"
+                maskChar=""
+                placeholder="Ex: 60866-000"
               />
             </Col>
           </Row>
@@ -167,7 +164,7 @@ function FormDeliveries({ match }) {
   );
 }
 
-FormDeliveries.propTypes = {
+FormRecipients.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,
@@ -175,4 +172,4 @@ FormDeliveries.propTypes = {
   }).isRequired,
 };
 
-export default FormDeliveries;
+export default FormRecipients;
