@@ -51,7 +51,7 @@ function Deliveries() {
             deliveryman: {
               name: deliveryman.name,
               initials: initialsName(deliveryman.name),
-              avatar: deliveryman.avatar.url,
+              avatar: (deliveryman.avatar && deliveryman.avatar.url) || null,
             },
             signature: (signature && signature.url) || null,
             ...rest,
