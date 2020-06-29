@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  web:
+    image: web-fastfeet
+    container_name: web-fastfeet
+    build: .
+    env_file:
+      - ./.env
+    ports:
+      - ${PORT}:80
+    restart: always
+    stdin_open: true
+    tty: true
