@@ -9,7 +9,7 @@ export const Content = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    max-height: 150px;
+    min-height: 150px;
     padding-bottom: 10px;
     border-bottom: 1px solid #eeeeee;
 
@@ -34,7 +34,7 @@ export const Content = styled.div`
     }
 
     img {
-      height: 100px;
+      max-height: 200px;
       width: 300px;
       margin: 0 auto;
     }
