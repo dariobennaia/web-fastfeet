@@ -9,7 +9,6 @@ export const Content = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 150px;
     padding-bottom: 10px;
     border-bottom: 1px solid #eeeeee;
 
