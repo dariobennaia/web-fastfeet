@@ -21,7 +21,15 @@ Este é um projeto fictício feito para uma gestão de encomendas de uma transpo
 
 Esta é a 2/3 partes de um projeto como todo. O mesmo foi construído utilizando as tecnlologias mais populares de JavaScript e do mercado.
 
-Se você ainda não baixou a API(1/3), você encontrar ela clicando [aqui](https://github.com/dariobennaia/api-fastfeet), siga os passos para uma instalação correta.
+Se você ainda não baixou as partes (1/3) ou (3/3), você vai encontrar elas abaixo, siga os passos para uma instalação correta:
+- [(1/3) Api](https://github.com/dariobennaia/api-fastfeet)
+- [(3/3) App](https://github.com/dariobennaia/mobile-fastfeet)
+
+<br/><br/>
+O usuario para acessar a aplicação caso você tenha rodado a api conforme os passos e executado as `seeds` é:
+
+login: admin@fastfeet.com<br/>
+senha: 123456
 
 ## :camera: Preview
 
